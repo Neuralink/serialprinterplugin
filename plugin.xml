@@ -9,7 +9,7 @@
     <keywords>serial,printer</keywords>
 
     <!-- js module -->
-    <js-module src="www/serialprinter.js" name="Serial">
+    <js-module src="www/serialprinter.js" name="SerialPrinter">
         <clobbers target="window.serialprinter" />
     </js-module>
 
