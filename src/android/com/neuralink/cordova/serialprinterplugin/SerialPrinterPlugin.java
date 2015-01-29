@@ -58,14 +58,25 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//PWMControl.PrinterEnable(1);
-		mSerialPrinter.sendLineFeed();
-		mSerialPrinter.printString("PAOLO LOVES XAND");
-		//mSerialPrinter.walkPaper(100);
-		//PWMControl.PrinterEnable(0);
-
-	//	mSerialPrinter.ClosePrinter();
-
+	
+		if(action.equals("printString")){
+			mSerialPrinter.printString(args.get(0).toString());
+			mSerialPrinter.sendLineFeed();
+			callbackContext.success("Printing Done!" + args.get(0).toString());
+		};
+/*
+		if(action.equals("enlargeFontSize")){
+			mSerialPrinter.enlargeFontSize(
+				Integer.parseInt(args.get(0).toString())
+				,Integer.parseInt(args.get(1).toString())
+			);
+		};
+*/
+		if(action.equals("sendLineFeed")){
+			mSerialPrinter.sendLineFeed();
+		};
+				
+				
         return true;
     }    
 

@@ -1,7 +1,7 @@
 var SerialPrinterPlugin = function() {};
 
-SerialPrinterPlugin.prototype.say = function(success, fail) {
-    cordova.exec(success, fail, "SerialPrinterPlugin","say", []);
+SerialPrinterPlugin.prototype.doprint = function(action,args,success, fail) {
+    cordova.exec(success, fail, "SerialPrinterPlugin",action, JSON.parse(args));
 };
 
 var SerialPrinterPlugin = new SerialPrinterPlugin();
