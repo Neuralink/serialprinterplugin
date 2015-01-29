@@ -1,4 +1,4 @@
-package com.neuralink.cordova.serialprinter;
+package com.neuralink.cordova.serialprinterplugin;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -29,10 +29,31 @@ import hdx.pwm.PWMControl;
  * Cordova plugin to communicate with the android serial port
  * @author Xavier Seignard <xavier.seignard@gmail.com>
  */
-public class SerialPrinter extends CordovaPlugin {
+public class SerialPrinterPlugin extends CordovaPlugin {
+
+	ExecutorService pool = Executors.newSingleThreadExecutor(); 
+	SerialPrinter mSerialPrinter=SerialPrinter.GetSerialPrinter();
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        callbackContext.success("Hello World!");
+        callbackContext.success("Hello Worlda!");
+
+		try
+		{
+			PWMControl.PrinterEnable(1);
+			try {
+				mSerialPrinter.enlargeFontSize(1,2);
+				mSerialPrinter.printString("HELLOW");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}finally{
+			PWMControl.PrinterEnable(0);
+		}
+
         return true;
     }    
+
 }
+
+

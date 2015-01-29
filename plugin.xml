@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.neuralink.cordova.serialprinter"
+    id="com.neuralink.cordova.serialprinterplugin"
     version="0.0.1">
     <name>SerialPrinter</name>
     <description>Cordova plugin to communicate with the android serial port printers</description>
@@ -9,19 +9,19 @@
     <keywords>serial,printer</keywords>
 
     <!-- js module -->
-    <js-module src="www/serialprinter.js" name="SerialPrinter">
-        <clobbers target="window.serialprinter" />
+    <js-module src="www/serialprinterplugin.js" name="SerialPrinterPlugin">
+        <clobbers target="window.serialprinterplugin" />
     </js-module>
 
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="SerialPrinter">
-                <param name="android-package" value="com.neuralink.cordova.serialprinter.SerialPrinter"/>
+            <feature name="SerialPrinterPlugin">
+                <param name="android-package" value="com.neuralink.cordova.serialprinterplugin.SerialPrinterPlugin"/>
             </feature>
         </config-file>
-        <source-file src="src/android/com/neuralink/cordova/serialprinter/SerialPrinter.java" target-dir="src/com/neuralink/cordova/serialprinter" />
-        <source-file src="src/android/com/neuralink/cordova/serialprinter/PWMControl.java" target-dir="src/com/neuralink/cordova/serialprinter" />
+        <source-file src="src/android/com/neuralink/cordova/serialprinter/SerialPrinterPlugin.java" target-dir="src/com/neuralink/cordova/serialprinterplugin" />
+        <source-file src="src/android/com/neuralink/cordova/serialprinter/PWMControl.java" target-dir="src/com/neuralink/cordova/serialprinterplugin" />
         <source-file src="lib/serial.jar" target-dir="libs" />
         <source-file src="lib/SerialPrinterLib.jar" target-dir="libs" />
     </platform>
