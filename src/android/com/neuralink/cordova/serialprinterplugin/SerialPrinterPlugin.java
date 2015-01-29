@@ -1,10 +1,6 @@
 package com.neuralink.cordova.serialprinterplugin;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.nio.ByteBuffer;
-import java.util.List;
+import hdx.pwm.PWMControl;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -13,17 +9,37 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbManager;
-import android.util.Log;
-import android.util.Base64;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import hdx.pwm.PWMControl;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.hdx.lib.printer.*;
+import com.hdx.lib.serial.SerialParam;
+import com.hdx.lib.serial.SerialPortOperaion;
+import com.hdx.lib.serial.SerialPortOperaion.SerialReadData;
+
 
 /**
  * Cordova plugin to communicate with the android serial port
@@ -36,24 +52,36 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        callbackContext.success("Hello Worlda!");
-
-		try
-		{
-			PWMControl.PrinterEnable(1);
-			try {
-				mSerialPrinter.enlargeFontSize(1,2);
-				mSerialPrinter.printString("HELLOW");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}finally{
-			PWMControl.PrinterEnable(0);
+		try {
+			mSerialPrinter.OpenPrinter(new SerialParam(115200,"/dev/ttyS2",0),new SerialDataHandler());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		//PWMControl.PrinterEnable(1);
+		mSerialPrinter.sendLineFeed();
+		mSerialPrinter.printString("PAOLO LOVES XAND");
+		//mSerialPrinter.walkPaper(100);
+		//PWMControl.PrinterEnable(0);
+
+	//	mSerialPrinter.ClosePrinter();
 
         return true;
     }    
 
+	private class SerialDataHandler extends Handler{
+        public void handleMessage(Message msg) {
+			switch (msg.what) {
+                case SerialPortOperaion.SERIAL_RECEIVED_DATA_MSG:
+                	SerialReadData data = (SerialReadData)msg.obj;
+                	StringBuilder sb=new StringBuilder();
+                	for(int x=0;x<data.size;x++)
+						sb.append(String.format("%02x", data.data[x]));
+                	             	
+            }
+        }
+	}	
+	
 }
 
 
