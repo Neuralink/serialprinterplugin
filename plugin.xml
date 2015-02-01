@@ -24,5 +24,8 @@
         <source-file src="src/android/com/neuralink/cordova/serialprinterplugin/PWMControl.java" target-dir="src/com/neuralink/cordova/serialprinterplugin" />
         <source-file src="lib/serial.jar" target-dir="libs" />
         <source-file src="lib/SerialPrinterLib.jar" target-dir="libs" />
+        <source-file src="lib/libpwmV2.so" target-dir="libs" />
+        <source-file src="lib/libserial_port.so" target-dir="libs" />
+        <source-file src="lib/HdxUtil.jar" target-dir="libs" />		
     </platform>
 </plugin>
