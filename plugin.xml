@@ -26,7 +26,5 @@
         <source-file src="lib/SerialPrinterLib.jar" target-dir="libs" />
         <source-file src="lib/libpwmV2.so" target-dir="libs" />
         <source-file src="lib/libserial_port.so" target-dir="libs" />
-        <source-file src="lib/HdxUtil.jar" target-dir="libs" />	
-        <source-file src="lib/android-support-v4.jar" target-dir="libs" />			
     </platform>
 </plugin>

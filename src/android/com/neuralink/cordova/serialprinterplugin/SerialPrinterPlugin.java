@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.os.SystemClock;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -60,8 +62,11 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 		}
 	
 		if(action.equals("printString")){
+			PWMControl.PrinterEnable(1);
+			SystemClock.sleep(500);
 			mSerialPrinter.printString(args.get(0).toString());
 			mSerialPrinter.sendLineFeed();
+			//PWMControl.PrinterEnable(0);
 			callbackContext.success("Printing Done!" + args.get(0).toString());
 		};
 /*
@@ -75,7 +80,30 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 		if(action.equals("sendLineFeed")){
 			mSerialPrinter.sendLineFeed();
 		};
-				
+	
+		if(action.equals("printIMG")){
+
+			try {
+				PWMControl.PrinterEnable(1);
+				SystemClock.sleep(500);
+				FileInputStream is = new FileInputStream("/mnt/sdcard/logo.bmp");
+				BitmapDrawable bmpDraw = new BitmapDrawable(is);
+				Bitmap bmp = bmpDraw.getBitmap();
+				mSerialPrinter.PrintBmp(100,bmp);					
+				is.close();
+			} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		};
+
+		if(action.equals("printCode")){
+			try {
+				SystemClock.sleep(500);
+				mSerialPrinter.printBarCode(0,new byte[]{1,2,3,4,5,6,7,8,9,6,6});
+			} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		};
 				
         return true;
     }    
