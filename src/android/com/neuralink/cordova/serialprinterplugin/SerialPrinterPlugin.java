@@ -61,13 +61,33 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 			e1.printStackTrace();
 		}
 	
-		if(action.equals("printString")){
-			PWMControl.PrinterEnable(1);
+		if(action.equals("BUZZ")){
+			PWMControl.EnableBuzze(1);
 			SystemClock.sleep(500);
-			mSerialPrinter.printString(args.get(0).toString());
-			mSerialPrinter.sendLineFeed();
-			//PWMControl.PrinterEnable(0);
-			callbackContext.success("Printing Done!" + args.get(0).toString());
+			PWMControl.EnableBuzze(0);
+		};
+
+		if(action.equals("LIGHTSON")){
+			PWMControl.SetCameraBacklightness(50);
+		};
+		
+		if(action.equals("printString")){
+			try {
+				PWMControl.PrinterEnable(1);
+				SystemClock.sleep(500);
+				mSerialPrinter.printString(args.get(0).toString());
+				mSerialPrinter.sendLineFeed();
+				//PWMControl.PrinterEnable(0);
+			} finally {
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
+	
+				callbackContext.success("Printing Done!" + args.get(0).toString());
+			}
 		};
 /*
 		if(action.equals("enlargeFontSize")){
@@ -93,6 +113,13 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 				is.close();
 			} catch (Exception e) {
 			  e.printStackTrace();
+			} finally {
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
 			}
 		};
 
@@ -102,7 +129,15 @@ public class SerialPrinterPlugin extends CordovaPlugin {
 				mSerialPrinter.printBarCode(0,new byte[]{1,2,3,4,5,6,7,8,9,6,6});
 			} catch (Exception e) {
 			  e.printStackTrace();
+			} finally {
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
+				PWMControl.EnableBuzze(1);
+				SystemClock.sleep(100);
+				PWMControl.EnableBuzze(0);
 			}
+				
 		};
 				
         return true;
